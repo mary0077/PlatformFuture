@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/desktop.css">
+    <title>Login</title>
+</head>
+<body>
+    <main>
+        <div class="logo-container">
+            <img src="/img/logo.png" alt="Logo" class="logo-img">
+        </div>
+        <div class="logo-text-container">
+            <p class="logo">Faça seu login aqui!</p>
+        </div>
+        <form id="loginForm">
+            <div class="input_container">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" required>
+            </div>
+            <div class="input_container">
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" id="senha" required>
+            </div>
+            <div class="input_container click_me">
+                <p>Novo por aqui? <br>Clique <a href="/auth/register">Aqui</a> para se registrar!</p>
+            </div>
+            <input type="submit" value="Logar">
+            <p id="error-message" style="color: red; display: none;">Erro ao realizar login. Verifique suas credenciais e tente novamente.</p>
+        </form>
+    </main>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('error-message');
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            const bodyData = {
+                email: email,
+                senha: senha
+            };
+
+            fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    sessionStorage.setItem('authToken', data.token);
+                    window.location.href = '/token'; // Redireciona para a página de token
+                } else {
+                    errorMessage.style.display = "block";
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                errorMessage.style.display = "block";
+            });
+        });
+    </script>
+</body>
+</html>
