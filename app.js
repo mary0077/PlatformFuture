@@ -47,8 +47,8 @@ const authenticateJWT = (req, res, next) => {
   });
 };
 
-app.use('/alunos', authenticateJWT, alunosRouter);
-app.use('/turmas', authenticateJWT, turmaRouter);
+app.use('/alunos', alunosRouter);
+app.use('/turmas', turmaRouter);
 app.use('/funcionarios', authenticateJWT, funcionarioRouter);
 app.use('/panel', panelRouter);
 app.use('/auth', authRouter);

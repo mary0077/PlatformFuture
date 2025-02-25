@@ -57,7 +57,7 @@
             .then(data => {
                 if (data.token) {
                     sessionStorage.setItem('authToken', data.token);
-                    window.location.href = '/token'; // Redireciona para a página de token
+                    window.location.href = '/token'; 
                 } else {
                     errorMessage.style.display = "block";
                 }

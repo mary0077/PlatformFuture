@@ -25,10 +25,10 @@
     "fastify": "^4.28.1",
     "iconv-lite": "^0.6.3",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.11.0",
+    "mysql2": "^3.12.0",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.4",
+    "sequelize": "^6.37.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
@@ -36,7 +36,8 @@
     "@types/node": "^22.1.0",
     "nodemon": "^3.1.7",
     "prisma": "^5.18.0",
-    "tsup": "^8.2.4",
+    "sequelize-cli": "^6.6.2",
+    "tsup": "^2.0.3",
     "tsx": "^4.16.5",
     "typescript": "^5.5.4"
   }
