@@ -2,7 +2,7 @@
 
 Este projeto é uma API para gerenciar alunos, funcionários e turmas de uma escola. A aplicação é desenvolvida em **Node.js** com o framework **Express**, utilizando **Sequelize** para interagir com o banco de dados PostgreSQL e autenticação JWT para proteger rotas específicas. A documentação da API é gerada automaticamente com **Swagger**.
 
-<img src="./public/img/" alt="screenshot do projeto">
+<img src="./public/img/future.png" alt="screenshot do projeto">
 
 ## Tecnologias Utilizadas
 
