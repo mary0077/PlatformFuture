@@ -130,13 +130,18 @@ router.get('/register', (req, res) => {
 router.post('/register', async (req, res) => {
     const { nome, email, senha, cargo } = req.body;
     console.log({ nome, email, senha, cargo });
+
     try {
-        const funcionario = await cadastrar(nome, email, senha, cargo);
-        res.redirect('/auth/login');
+        await cadastrar(nome, email, senha, cargo);
+        
+        // Retorna uma resposta JSON para o frontend processar
+        res.status(201).json({ message: "Funcionário cadastrado com sucesso!", redirect: "/auth/login" });
+
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
+
 
 /**
  * @swagger

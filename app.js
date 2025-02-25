@@ -16,6 +16,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Middleware para processar requisições com JSON
 app.use(express.json()); // Isso permite processar JSON corretamente
 
@@ -47,8 +48,8 @@ const authenticateJWT = (req, res, next) => {
   });
 };
 
-app.use('/alunos', alunosRouter);
-app.use('/turmas', turmaRouter);
+app.use('/alunos', authenticateJWT, alunosRouter);
+app.use('/turmas', authenticateJWT , turmaRouter);
 app.use('/funcionarios', authenticateJWT, funcionarioRouter);
 app.use('/panel', panelRouter);
 app.use('/auth', authRouter);
