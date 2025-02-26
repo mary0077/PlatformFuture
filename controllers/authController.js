@@ -25,13 +25,16 @@ async function cadastrar(nome, email, senha, cargo) {
 
 async function login(Email, senha) {
     const funcionario = await Funcionario.findOne({ where: { Email } });
-    if (!funcionario) throw new Error('Funcionário não encontrado');
+
+    if (!funcionario) return { error: 'Funcionário não encontrado' };
 
     const isPasswordValid = await bcrypt.compare(senha, funcionario.senha);
-    if (!isPasswordValid) throw new Error('Senha incorreta');
+    if (!isPasswordValid) return { error: 'Senha incorreta' };
 
-    const token = jwt.sign({ id: funcionario.id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-    return { token };
+    const token = jwt.sign({ id: funcionario.id, nome: funcionario.nome }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+    return { token, nome: funcionario.nome };
 }
+
 
 module.exports = { cadastrar, login };

@@ -47,25 +47,29 @@
             };
 
             fetch('/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(bodyData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.token) {
-                    sessionStorage.setItem('authToken', data.token);
-                    window.location.href = '/token'; 
-                } else {
-                    errorMessage.style.display = "block";
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                errorMessage.style.display = "block";
-            });
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyData)
+})
+.then(response => response.json())
+.then(data => {
+    if (data.token) {
+        sessionStorage.setItem('authToken', data.token);
+        alert(`Bem-vindo, ${data.nome}!`);
+        window.location.href = '/token'; 
+    } else {
+        errorMessage.textContent = data.error; // Exibe o erro retornado pelo back-end
+        errorMessage.style.display = "block";
+    }
+})
+.catch(error => {
+    console.log(error);
+    errorMessage.textContent = "Erro ao conectar com o servidor.";
+    errorMessage.style.display = "block";
+});
+
         });
     </script>
 </body>
