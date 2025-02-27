@@ -17,7 +17,7 @@ exports.getAll = async (req, res) => {
 // Função para criar um novo aluno
 exports.create = async (req, res) => {
   try {
-      const { nome, email, idade, nota_primeiro_semestre, nota_segundo_semestre } = req.body;
+      const { nome, email, idade, NotaPrimeiroSemestre, NotaSegundoSemestre } = req.body;
 
       // Verifique se o email está definido
       if (!email) {
@@ -36,9 +36,9 @@ exports.create = async (req, res) => {
           nome,
           email,
           idade,
-          NotaPrimeiroModulo: nota_primeiro_semestre,
-          NotaSegundoModulo: nota_segundo_semestre,
-          Media: ((parseFloat(nota_primeiro_semestre) + parseFloat(nota_segundo_semestre))/2), // ou calcular com base nas notas
+          NotaPrimeiroModulo: NotaPrimeiroSemestre,
+          NotaSegundoModulo: NotaSegundoSemestre,
+          Media: ((parseFloat(NotaPrimeiroSemestre) + parseFloat(NotaSegundoSemestre))/2), // ou calcular com base nas notas
       });
 
       res.status(201).json(aluno);
@@ -67,14 +67,14 @@ exports.update = async (req, res) => {
   try {
     const aluno = await Aluno.findByPk(req.params.id);
     if (aluno) {
-      const { nome, idade, nota_primeiro_semestre, nota_segundo_semestre, nome_professor, numero_sala } = req.body;
+      const { nome, idade, NotaPrimeiroSemestre, NotaSegundoSemestre, nome_professor, numero_sala } = req.body;
 
       // Atualiza os dados do aluno
       await aluno.update({
         nome,
         idade,
-        NotaPrimeiroModulo: nota_primeiro_semestre,
-        NotaSegundoModulo: nota_segundo_semestre,
+        NotaPrimeiroModulo: NotaPrimeiroSemestre,
+        NotaSegundoModulo: NotaSegundoSemestre,
         Media: null, // ou recalcular
       });
 

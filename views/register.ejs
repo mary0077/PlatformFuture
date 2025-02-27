@@ -68,8 +68,10 @@
         const registerForm = document.getElementById('registerForm');
         registerForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Evita o recarregamento da página
-            
+            // Dentro do evento de submit do formulário de registro
+
             const nome = document.getElementById('nome').value;
+            sessionStorage.setItem('userName', nome);
             const cargo = document.getElementById('cargo').value;
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;

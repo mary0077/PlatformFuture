@@ -29,14 +29,14 @@ const Aluno = sequelize.define('Aluno', {
       min: 0 
     }
   },
-  NotaPrimeiroModulo: {
+  NotaPrimeiroSemestre: {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {
       max: 10.0
     }
   },
-  NotaSegundoModulo: {
+  NotaSegundoSemestre: {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {

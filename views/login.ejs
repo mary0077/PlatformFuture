@@ -46,7 +46,7 @@
                 senha: senha
             };
 
-            fetch('/auth/login', {
+    fetch('/auth/login', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -57,10 +57,11 @@
 .then(data => {
     if (data.token) {
         sessionStorage.setItem('authToken', data.token);
+        sessionStorage.setItem('userName', data.nome); // Armazena o nome do usuário
         alert(`Bem-vindo, ${data.nome}!`);
-        window.location.href = '/token'; 
+        window.location.href = '/painel/main'; // Redireciona para o painel
     } else {
-        errorMessage.textContent = data.error; // Exibe o erro retornado pelo back-end
+        errorMessage.textContent = data.error; 
         errorMessage.style.display = "block";
     }
 })

@@ -15,9 +15,9 @@
             </button>
         </div>
         <div class="user-account">
-            <div class="user-circle">W</div>
-            <span>Professor Flávio</span>
-        </div>
+            <div class="user-circle" id="user-initial">W</div>
+            <span id="user-name">Professor Flávio</span>
+        </div>        
     </header>
     <main id="main-content">
         <!-- Alunos Cadastrados -->
@@ -65,8 +65,8 @@
                 <input type="text" placeholder="Nome" name="nome" required>
                 <input type="email" placeholder="Email" name="email" required>
                 <input type="number" placeholder="Idade" name="idade" required>
-                <input type="number" placeholder="Nota 1º Semestre" name="nota_primeiro_semestre" required>
-                <input type="number" placeholder="Nota 2º Semestre" name="nota_segundo_semestre" required>
+                <input type="number" placeholder="Nota 1º Semestre" name="NotaPrimeiroSemestre" required>
+                <input type="number" placeholder="Nota 2º Semestre" name="NotaSegundoSemestre" required>
                 <button type="button" onclick="adicionarAluno()">Adicionar</button>
             </form>
 
@@ -81,6 +81,16 @@
     </div>
 
     <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const userName = sessionStorage.getItem('userName');
+    console.log(userName);
+    if (userName) {
+        document.getElementById('user-name').textContent = userName;
+        document.getElementById('user-initial').textContent = userName.charAt(0).toUpperCase();
+    }
+});
+
         function getAuthToken() {
             return sessionStorage.getItem('authToken');
         }

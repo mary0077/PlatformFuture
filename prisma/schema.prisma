@@ -17,8 +17,8 @@ model Aluno {
   nome                  String
   email                 String  @unique
   idade                 Int
-  nota_primeiro_semestre Float
-  nota_segundo_semestre Float
+ NotaPrimeiroSemestre  Float
+  NotaSegundoSemestre Float
 }
 
 

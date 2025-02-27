@@ -12,8 +12,8 @@ const alunoController = require('../controllers/alunoController');
  *         - nome
  *         - email
  *         - idade
- *         - nota_primeiro_semestre
- *         - nota_segundo_semestre
+ *         - NotaPrimeiroSemestre
+ *         - NotaSegundoSemestre
  *         - nome_professor
  *         - numero_sala
  *       properties:
@@ -28,10 +28,10 @@ const alunoController = require('../controllers/alunoController');
  *           description: Email do aluno, deve ser único
  *         idade:
  *           type: integer
- *         nota_primeiro_semestre:
+ *         NotaPrimeiroSemestre:
  *           type: number
  *           format: float
- *         nota_segundo_semestre:
+ *         NotaSegundoSemestre:
  *           type: number
  *           format: float
  *         nome_professor:
@@ -43,8 +43,8 @@ const alunoController = require('../controllers/alunoController');
  *         nome: "João Silva"
  *         email: "joao.silva@example.com"
  *         idade: 15
- *         nota_primeiro_semestre: 8.5
- *         nota_segundo_semestre: 9.0
+ *         NotaPrimeiroSemestre: 8.5
+ *         NotaSegundoSemestre: 9.0
  *         nome_professor: "Prof. Carlos"
  *         numero_sala: 101
  */
