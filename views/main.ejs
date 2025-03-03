@@ -35,37 +35,45 @@
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" onclick="closeForm()">&times;</span>
-            <form id="form-aluno" class="formulario">
-                <h2>Adicionar Aluno</h2>
+            <form id="form-aluno" onsubmit="event.preventDefault(); adicionarAluno();">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required>
-                
-                <label for="email">Email:</label>
+            
+                <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" required>
-                
+            
                 <label for="idade">Idade:</label>
                 <input type="number" id="idade" name="idade" required>
-                
-                <label for="nota1">Nota 1º Semestre:</label>
-                <input type="number" id="nota1" name="NotaPrimeiroSemestre" required>
-                
-                <label for="nota2">Nota 2º Semestre:</label>
-                <input type="number" id="nota2" name="NotaSegundoSemestre" required>
-                
-                <button type="button" onclick="adicionarAluno()">Adicionar</button>
+            
+                <label for="NotaPrimeiroSemestre">Nota 1º Semestre:</label>
+                <input type="number" id="NotaPrimeiroSemestre" name="NotaPrimeiroSemestre" required>
+            
+                <label for="NotaSegundoSemestre">Nota 2º Semestre:</label>
+                <input type="number" id="NotaSegundoSemestre" name="NotaSegundoSemestre" required>
+
+                <label for="nome_professor">Professor:</label>
+                <input type="text" id="nome_professor" name="nome_professor" required>
+            
+                <button type="submit">Cadastrar Aluno</button>
             </form>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const userName = sessionStorage.getItem('userName');
-            if (userName) {
-                document.getElementById('user-name').textContent = userName;
-                document.getElementById('user-initial').textContent = userName.charAt(0).toUpperCase();
-            }
-            refreshAlunos();
-        });
+       document.addEventListener('DOMContentLoaded', () => {
+    const userName = sessionStorage.getItem('userName');
+    if (userName) {
+        document.getElementById('user-name').textContent = userName;
+        document.getElementById('user-initial').textContent = userName.charAt(0).toUpperCase();
+
+        // Preenche automaticamente o campo nome_professor
+        const nomeProfessorInput = document.getElementById('nome_professor');
+        if (nomeProfessorInput) {
+            nomeProfessorInput.value = userName;
+        }
+    }
+    refreshAlunos();
+});
 
         function getAuthToken() {
             return sessionStorage.getItem('authToken');
@@ -127,6 +135,7 @@
                                 <p><strong>Nome:</strong> ${aluno.nome}</p>
                                 <p><strong>Idade:</strong> ${aluno.idade}</p>
                                 <p><strong>Email:</strong> ${aluno.email}</p>
+                                <p><strong>Professor:</strong> ${aluno.nome_professor}</p>
                                 <button class="delete-button" onclick="excluirAluno(${aluno.id})">Excluir</button>
                             </div>`;
                     });
@@ -135,6 +144,48 @@
                 console.log(err);
             }
         }
+        async function adicionarAluno() {
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('email').value;
+    const idade = document.getElementById('idade').value;
+    const NotaPrimeiroSemestre = parseFloat(document.getElementById('NotaPrimeiroSemestre').value);
+    const NotaSegundoSemestre = parseFloat(document.getElementById('NotaSegundoSemestre').value);
+    const nome_professor = document.getElementById('nome_professor').value;
+
+    console.log({ nome, email, idade, NotaPrimeiroSemestre, NotaSegundoSemestre, nome_professor });
+
+    if (isNaN(NotaPrimeiroSemestre) || isNaN(NotaSegundoSemestre)) {
+        alert("As notas devem ser números válidos!");
+        return;
+    }
+
+    const alunoData = {
+        nome,
+        email,
+        idade,
+        NotaPrimeiroSemestre,
+        NotaSegundoSemestre,
+        nome_professor
+    };
+
+    const response = await fetch('/api/alunos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAuthToken()}`
+        },
+        body: JSON.stringify(alunoData)
+    });
+
+    if (response.ok) {
+        closeForm();
+        refreshAlunos();
+    } else {
+        const data = await response.json();
+        alert(data.error || 'Erro ao cadastrar aluno');
+    }
+}
+
 
         async function excluirAluno(id) {
             const authToken = getAuthToken();

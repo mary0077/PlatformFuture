@@ -45,6 +45,11 @@ const Aluno = sequelize.define('Aluno', {
       max: 10.0
     }
   },
+  nome_professor: {
+  type: DataTypes.STRING,
+    allowNull: true,  // Permite NULL
+    defaultValue: 'Professor Desconhecido', // Valor padrão
+  },  
   Media: {
     type: DataTypes.FLOAT,
     allowNull: true,
