@@ -33,6 +33,7 @@ const Aluno = sequelize.define('Aluno', {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {
+      min: 0,
       max: 10.0
     }
   },
@@ -40,6 +41,7 @@ const Aluno = sequelize.define('Aluno', {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {
+      min: 0,
       max: 10.0
     }
   },
@@ -47,6 +49,14 @@ const Aluno = sequelize.define('Aluno', {
     type: DataTypes.FLOAT,
     allowNull: true,
     defaultValue: null
+  }
+}, {
+  hooks: {
+    beforeSave: (aluno) => {
+      if (aluno.NotaPrimeiroSemestre !== null && aluno.NotaSegundoSemestre !== null) {
+        aluno.Media = (aluno.NotaPrimeiroSemestre + aluno.NotaSegundoSemestre) / 2;
+      }
+    }
   }
 });
 

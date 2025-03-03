@@ -90,10 +90,10 @@
         errorMessage.textContent = data.error;
         errorMessage.style.display = 'block';
     } else {
-        alert(data.message); // Exibe a mensagem de sucesso
+        alert(data.message);
         
         setTimeout(() => {
-            window.location.href = data.redirect; // Agora redireciona corretamente
+            window.location.href = data.redirect;
         }, 1000); // Pequeno delay para garantir que o alerta seja visto
     }
 })
