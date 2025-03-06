@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Plataforma</title>
     <link rel="stylesheet" href="/css/painel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="search-container">
             <input type="text" placeholder="Pesquisar...">
             <button class="search-button">
-                <img src="lupa-icon.png" alt="Buscar">
-            </button>
+                <i class="fas fa-search"></i>
+            </button>            
         </div>
         <div class="user-account">
             <div class="user-circle" id="user-initial">W</div>
@@ -60,6 +61,10 @@
     </div>
 
     <script>
+        const formData = new FormData(document.getElementById('form-aluno'));
+const dados = Object.fromEntries(formData);
+dados.nome_professor = document.getElementById('nome_professor').value;
+
        document.addEventListener('DOMContentLoaded', () => {
     const userName = sessionStorage.getItem('userName');
     if (userName) {
@@ -80,9 +85,14 @@
         }
 
         function showForm() {
-            document.getElementById('modal').classList.remove('hidden');
-            document.getElementById('main-content').style.filter = 'blur(5px)';
-        }
+    const nomeProfessorInput = document.getElementById('nome_professor');
+    if (nomeProfessorInput && !nomeProfessorInput.value) {
+        nomeProfessorInput.value = sessionStorage.getItem('userName') || '';
+    }
+    document.getElementById('modal').classList.remove('hidden');
+    document.getElementById('main-content').style.filter = 'blur(5px)';
+}
+
 
         function closeForm() {
             document.getElementById('modal').classList.add('hidden');
