@@ -30,7 +30,6 @@
             <p id="error-message" style="color: red; display: none;">Erro ao realizar login. Verifique suas credenciais e tente novamente.</p>
         </form>
     </main>
-
     <script>
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('error-message');
@@ -51,25 +50,19 @@
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify(bodyData)
+    body: JSON.stringify({ email, senha })
 })
 .then(response => response.json())
 .then(data => {
-    if (data.token) {
-        sessionStorage.setItem('authToken', data.token);
-        sessionStorage.setItem('userName', data.nome); // Armazena o nome do usuário
-        alert(`Bem-vindo, ${data.nome}!`);
-        window.location.href = '/painel/main'; // Redireciona para o painel
+    if (data.error) {
+        alert(data.error);
     } else {
-        errorMessage.textContent = data.error; 
-        errorMessage.style.display = "block";
+        sessionStorage.setItem('userName', data.nome); // Salva o nome no sessionStorage
+        sessionStorage.setItem('authToken', data.token); // Salva o token para autenticação
+        window.location.href = "/painel/main"; // Redireciona para a página do painel
     }
-})
-.catch(error => {
-    console.log(error);
-    errorMessage.textContent = "Erro ao conectar com o servidor.";
-    errorMessage.style.display = "block";
 });
+
 
         });
     </script>

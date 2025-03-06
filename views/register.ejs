@@ -71,7 +71,6 @@
             // Dentro do evento de submit do formulário de registro
 
             const nome = document.getElementById('nome').value;
-            sessionStorage.setItem('userName', nome);
             const cargo = document.getElementById('cargo').value;
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
@@ -92,11 +91,15 @@
     } else {
         alert(data.message);
         
+        // Armazena o nome do usuário no sessionStorage
+        sessionStorage.setItem('userName', nome);
+
         setTimeout(() => {
             window.location.href = data.redirect;
-        }, 1000); // Pequeno delay para garantir que o alerta seja visto
+        }, 1000);
     }
 })
+
 
         });
     </script>

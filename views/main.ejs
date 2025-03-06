@@ -16,9 +16,9 @@
             </button>            
         </div>
         <div class="user-account">
-            <div class="user-circle" id="user-initial">W</div>
-            <span id="user-name">Professor Flávio</span>
-        </div>        
+            <div class="user-circle" id="user-initial">U</div>
+            <span id="user-name">Usuário</span>
+        </div>   
     </header>
     <main id="main-content">
         <section class="students-section">
@@ -61,31 +61,37 @@
     </div>
 
     <script>
-        const formData = new FormData(document.getElementById('form-aluno'));
+        
+const formData = new FormData(document.getElementById('form-aluno'));
 const dados = Object.fromEntries(formData);
-dados.nome_professor = document.getElementById('nome_professor').value;
+dados.nome_professor = document.getElementById('user-name').value;
 
-       document.addEventListener('DOMContentLoaded', () => {
+// BUGG AQUI EXBIÇÃO DO NOME USUARIO
+
+document.addEventListener('DOMContentLoaded', () => {
     const userName = sessionStorage.getItem('userName');
+
+    console.log("Nome do usuário:", userName); // Debug
+
     if (userName) {
         document.getElementById('user-name').textContent = userName;
         document.getElementById('user-initial').textContent = userName.charAt(0).toUpperCase();
-
-        // Preenche automaticamente o campo nome_professor
-        const nomeProfessorInput = document.getElementById('nome_professor');
-        if (nomeProfessorInput) {
-            nomeProfessorInput.value = userName;
-        }
+    } else {
+        document.getElementById('user-name').textContent = "Usuário não encontrado";
+        document.getElementById('user-initial').textContent = "U";
     }
+
     refreshAlunos();
 });
+
+
 
         function getAuthToken() {
             return sessionStorage.getItem('authToken');
         }
 
         function showForm() {
-    const nomeProfessorInput = document.getElementById('nome_professor');
+    const nomeProfessorInput = document.getElementById('user-name');
     if (nomeProfessorInput && !nomeProfessorInput.value) {
         nomeProfessorInput.value = sessionStorage.getItem('userName') || '';
     }
@@ -154,7 +160,7 @@ dados.nome_professor = document.getElementById('nome_professor').value;
                 console.log(err);
             }
         }
-        async function adicionarAluno() {
+    async function adicionarAluno() {
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const idade = document.getElementById('idade').value;
@@ -195,8 +201,6 @@ dados.nome_professor = document.getElementById('nome_professor').value;
         alert(data.error || 'Erro ao cadastrar aluno');
     }
 }
-
-
         async function excluirAluno(id) {
             const authToken = getAuthToken();
 
