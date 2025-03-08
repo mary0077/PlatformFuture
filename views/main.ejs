@@ -20,7 +20,9 @@
             <span id="user-name">Usuário</span>
         </div>   
     </header>
+    
     <main id="main-content">
+        <!-- Alunos Cadastrados -->
         <section class="students-section">
             <div class="section-header">
                 <h2>Alunos Cadastrados</h2>
@@ -29,33 +31,53 @@
                     <button class="add-refresh" onclick="refreshAlunos()">Atualizar</button>
                 </div>
             </div>
-            <div class="students-list" id="students-list"></div>
+            <div class="students-list" id="students-list">
+                <!-- Lista de alunos será gerada aqui pelo JavaScript -->
+            </div>
+        </section>
+
+        <!-- Salas Disponíveis -->
+        <section class="rooms-section">
+            <div class="section-header">
+                <h2>Salas Disponíveis</h2>
+                <div class="buttons">
+                    <button class="add-refresh" onclick="showForm('sala')">Inserir</button>
+                    <button class="add-refresh" onclick="refreshSalas()">Atualizar</button>
+                </div>
+            </div>
+            <div class="rooms-list" id="room-list">
+                <% data.rooms.forEach((room) => { %>
+                    <div class="room-card">
+                        <p><strong>Curso:</strong> <%= room.nome %></p>
+                        <p><strong>Instrutor:</strong> <%= room.instrutor %></p>
+                        <p><strong>Alunos:</strong> <%= room.Alunos %></p>
+                        <button class="delete-button" onclick="excluirSala(<%= room.id %>)">Excluir</button>
+                    </div>
+                <% }) %>
+            </div>
         </section>
     </main>
 
+    <!-- Modal Formulário -->
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" onclick="closeForm()">&times;</span>
-            <form id="form-aluno" onsubmit="event.preventDefault(); adicionarAluno();">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-            
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            
-                <label for="idade">Idade:</label>
-                <input type="number" id="idade" name="idade" required>
-            
-                <label for="NotaPrimeiroSemestre">Nota 1º Semestre:</label>
-                <input type="number" id="NotaPrimeiroSemestre" name="NotaPrimeiroSemestre" required>
-            
-                <label for="NotaSegundoSemestre">Nota 2º Semestre:</label>
-                <input type="number" id="NotaSegundoSemestre" name="NotaSegundoSemestre" required>
+            <form id="form-aluno" class="hidden">
+                <h2>Adicionar Aluno</h2>
+                <input type="text" placeholder="Nome" name="nome" required>
+                <input type="email" placeholder="Email" name="email" required>
+                <input type="number" placeholder="Idade" name="idade" required>
+                <input type="number" placeholder="Nota 1º Semestre" name="nota_primeiro_semestre" required>
+                <input type="number" placeholder="Nota 2º Semestre" name="nota_segundo_semestre" required>
+                <button type="button" onclick="adicionarAluno()">Adicionar</button>
+            </form>
 
-                <label for="nome_professor">Professor:</label>
-                <input type="text" id="nome_professor" name="nome_professor" required>
-            
-                <button type="submit">Cadastrar Aluno</button>
+            <form id="form-sala" class="hidden">
+                <h2>Adicionar Sala</h2>
+                <input type="text" placeholder="Nome do Curso" name="nome" required>
+                <input type="text" placeholder="Instrutor" name="instrutor" required>
+                <input type="number" placeholder="Número de Alunos" name="Alunos" required>
+                <button type="button" onclick="adicionarSala()">Adicionar</button>
             </form>
         </div>
     </div>
@@ -84,13 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshAlunos();
 });
 
-
-
         function getAuthToken() {
-            return sessionStorage.getItem('authToken');
+        return sessionStorage.getItem('authToken');
         }
 
-        function showForm() {
+    function showForm() {
     const nomeProfessorInput = document.getElementById('user-name');
     if (nomeProfessorInput && !nomeProfessorInput.value) {
         nomeProfessorInput.value = sessionStorage.getItem('userName') || '';
@@ -131,35 +151,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         async function refreshAlunos() {
-            const authToken = getAuthToken();
-            const studentsDOM = document.getElementById('students-list');
+    const authToken = getAuthToken();
+    const studentsDOM = document.getElementById('students-list');
 
-            try {
-                const res = await fetch('/alunos', {
-                    method: "GET",
-                    headers: {
-                        "Authorization": "Bearer " + authToken
-                    }
-                });
-
-                if (res.ok) {
-                    const alunos = await res.json();
-                    studentsDOM.innerHTML = "";
-                    alunos.forEach(aluno => {
-                        studentsDOM.innerHTML += `
-                            <div class="student-card">
-                                <p><strong>Nome:</strong> ${aluno.nome}</p>
-                                <p><strong>Idade:</strong> ${aluno.idade}</p>
-                                <p><strong>Email:</strong> ${aluno.email}</p>
-                                <p><strong>Professor:</strong> ${aluno.nome_professor}</p>
-                                <button class="delete-button" onclick="excluirAluno(${aluno.id})">Excluir</button>
-                            </div>`;
-                    });
-                }
-            } catch (err) {
-                console.log(err);
+    try {
+        const res = await fetch('/alunos', {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + authToken
             }
+        });
+
+        if (res.ok) {
+            const alunos = await res.json();
+            console.log("Alunos recebidos:", alunos); // <-- Verifica se os alunos estão chegando
+            studentsDOM.innerHTML = "";
+
+            alunos.forEach(aluno => {
+                console.log("Processando aluno:", aluno); // <-- Verifica se está processando os alunos corretamente
+                studentsDOM.innerHTML += `
+                    <div class="student-card">
+                        <p><strong>Nome:</strong> ${aluno.nome}</p>
+                        <p><strong>Idade:</strong> ${aluno.idade}</p>
+                        <p><strong>Email:</strong> ${aluno.email}</p>
+                        <p><strong>Professor:</strong> ${aluno.nome_professor}</p>
+                        <button class="delete-button" onclick="excluirAluno(${aluno.id})">Excluir</button>
+                    </div>`;
+            });
+        } else {
+            console.error("Erro ao buscar alunos:", res.status);
         }
+    } catch (err) {
+        console.log("Erro ao carregar alunos:", err);
+    }
+}
+
     async function adicionarAluno() {
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
